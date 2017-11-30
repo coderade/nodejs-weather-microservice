@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-weather-microservice",
+  "version": "1.0.0",
+  "description": "Simple weather microservice that returns the weather for a given location.",
+  "main": "server/service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "superagent": "^3.8.1"
+  }
+}
