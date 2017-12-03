@@ -6,12 +6,12 @@ const server = http.createServer(service);
 server.listen();
 
 server.on('listening', function () {
-    console.log(`The weather micro-service is listening on ${server.address().port} in ${service.get('env')} mode.`);
+    console.log(`The weather micro-service is listening on the http://localhost:${server.address().port} in ${service.get('env')} mode.`);
 
     const announce = () => {
         request.put(`http://127.0.0.1:3000/service/weather/${server.address().port}`, (err, res) => {
             if (err) {
-                console.log('Error connecting to Siri');
+                console.log('Error connecting to Coderade Bot.');
                 console.log(err);
                 return;
             }
