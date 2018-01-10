@@ -40,12 +40,29 @@ To run this application, an [OpenWeatherMap API](http://openweathermap.org/api)
 key is needed.
 
 After you create your API key you will need to pass it as environment variable
-parameter. I use the [WebStorm](https://www.jetbrains.com/webstorm) IDE to
+parameter. 
+
+This project uses the [dotenv](https://github.com/motdotla/dotenv) module to load the environment variables, so on the 
+root directory of the project use the following command to copy the env example file to the `.env` file that will be 
+used to load the environment variables.
+
+`cp .env-example .env`
+
+Then, you can edit the `OPEN_WEATHER_API_KEY` environment variable with your generated key, 
+like the following:
+
+```docker
+OPEN_WEATHER_API_KEY=0000-0000-0000-0000-0000
+```
+
+You can also pass the environment variables on your IDE.
+
+I use the [WebStorm](https://www.jetbrains.com/webstorm) IDE to
 debug my Node.js applications, which you can follow this
 [tutorial](https://www.jetbrains.com/help/webstorm/run-debug-configuration-node-js.html) to
 set Node.js environment variables in this IDE.
 
-Otherwise you can pass the OpenWeatherMap API key directly on your command line.
+Otherwise, you can pass the OpenWeatherMap API key directly on your command line.
 To do this on the root directory of the project run the following command
 passing your `OPEN_WEATHER_API_KEY` as env parameter:
 
