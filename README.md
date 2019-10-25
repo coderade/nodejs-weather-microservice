@@ -1,88 +1,65 @@
-# nodejs-weather-microservice
+# Node.js Weather Microservice
 
-Simple weather microservice that returns the weather for a given location.
-This microservice example uses the Weather API from the
-[OpenWeatherMap API](http://openweathermap.org/api) and has been created to
-be used with my [Slack Bot API](https://github.com/coderade/nodejs-msb-slack-bot)
-project
+A simple weather microservice that returns the weather for a given location. This microservice uses the Weather API from the [OpenWeatherMap API](http://openweathermap.org/api) and has been created to be used with my [Slack Bot API](https://github.com/coderade/nodejs-msb-slack-bot) project.
 
-It is necessary to [create a account](https://home.openweathermap.org/users/sign_in)
-to generate a API key and to use this service.
+## Prerequisites
+
+You need to [create an account](https://home.openweathermap.org/users/sign_in) on OpenWeatherMap to generate an API key to use this service.
 
 ## Resilient Architecture
-As this service has been created to be used with my Slack Bot API project as
-an intent service to process the result a weather to be used on my natural
-language processing with [wit.ai](https://wit.ai/).
 
-I tried to make it resilient, so the service knows the endpoint address of the
-main bot application (`http://127.0.0.1:3000/service/weather`) and it will try
-to announce itself every 30 seconds and to intent it can serve.
+As this service has been created to be used with my Slack Bot API project as an intent service to process weather information for natural language processing with [wit.ai](https://wit.ai/), it is designed to be resilient. The service knows the endpoint address of the main bot application (`http://127.0.0.1:3000/service/weather`) and will announce itself every 30 seconds to serve its intent.
 
-The main [bot application](https://github.com/coderade/nodejs-msb-slack-bot) will
-keep track of the services available and route the requests there.
+The main [bot application](https://github.com/coderade/nodejs-msb-slack-bot) will keep track of the services available and route requests accordingly.
 
-## How to use
+## How to Use
 
-Download and install the Node.Js using the [NVM](https://github.com/creationix/nvm).
+1. Download and install Node.js using [NVM](https://github.com/creationix/nvm).
+2. Install [yarn](https://yarnpkg.com/en/) following the official [documentation](https://yarnpkg.com/lang/en/docs/install/#linux-tab).
+3. Clone the repository and install the node modules:
+    ```bash
+    yarn install
+    ```
 
-Install the [yarn](https://yarnpkg.com/en/) following the official
-[documentation](https://yarnpkg.com/lang/en/docs/install/#linux-tab).
+## Running the Service
 
-Clone the repository and install the node modules.
+To run this application, an [OpenWeatherMap API](http://openweathermap.org/api) key is needed.
 
-`yarn install`
+1. Create your API key.
+2. Pass it as an environment variable parameter.
 
-After this, you can run the service.
+This project uses the [dotenv](https://github.com/motdotla/dotenv) module to load environment variables. In the root directory of the project, use the following command to copy the example environment file to the `.env` file:
+    ```bash
+    cp .env-example .env
+    ```
 
-## Running the service
+3. Edit the `OPEN_WEATHER_API_KEY` environment variable with your generated key:
+    ```plaintext
+    OPEN_WEATHER_API_KEY=0000-0000-0000-0000-0000
+    ```
 
-To run this application, an [OpenWeatherMap API](http://openweathermap.org/api)
-key is needed.
+4. You can also pass the environment variables in your IDE.
 
-After you create your API key you will need to pass it as environment variable
-parameter. 
+I use the [WebStorm](https://www.jetbrains.com/webstorm) IDE to debug my Node.js applications. You can follow this [tutorial](https://www.jetbrains.com/help/webstorm/run-debug-configuration-node-js.html) to set Node.js environment variables in this IDE.
 
-This project uses the [dotenv](https://github.com/motdotla/dotenv) module to load the environment variables, so on the 
-root directory of the project use the following command to copy the env example file to the `.env` file that will be 
-used to load the environment variables.
+Otherwise, you can pass the OpenWeatherMap API key directly in your command line. To do this in the root directory of the project, run the following command passing your `OPEN_WEATHER_API_KEY` as an environment parameter:
+    ```bash
+    OPEN_WEATHER_API_KEY=<YOUR API KEY> node bin/run.js
+    ```
 
-`cp .env-example .env`
-
-Then, you can edit the `OPEN_WEATHER_API_KEY` environment variable with your generated key, 
-like the following:
-
-```docker
-OPEN_WEATHER_API_KEY=0000-0000-0000-0000-0000
+If everything is set up correctly, the console will show the following message:
+```plaintext
+The weather micro-service is listening on http://localhost:PORT in development mode.
+Error connecting to Coderade Bot.
 ```
 
-You can also pass the environment variables on your IDE.
-
-I use the [WebStorm](https://www.jetbrains.com/webstorm) IDE to
-debug my Node.js applications, which you can follow this
-[tutorial](https://www.jetbrains.com/help/webstorm/run-debug-configuration-node-js.html) to
-set Node.js environment variables in this IDE.
-
-Otherwise, you can pass the OpenWeatherMap API key directly on your command line.
-To do this on the root directory of the project run the following command
-passing your `OPEN_WEATHER_API_KEY` as env parameter:
-
-`OPEN_WEATHER_API_KEY=<YOUR API KEY> node bin/run.js`
-
-If everything is ok, the console will show the following message:
-
-`The weather micro-service is listening on the http://localhost:PORT in development mode.
-Error connecting to Coderade Bot.`
-
-The service will try to connect on the
-[bot application](https://github.com/coderade/nodejs-msb-slack-bot), so if the
-bot application is not running you will receive the following error message:
-
-`Error connecting to Coderade Bot.`
-
-The service will try to connect again every 30 seconds and if the
-bot application is not running yet, you will receive an error like this.
-
+The service will try to connect to the [bot application](https://github.com/coderade/nodejs-msb-slack-bot). If the bot application is not running, you will receive the following error message:
+```plaintext
+Error connecting to Coderade Bot.
 ```
+
+The service will try to connect again every 30 seconds. If the bot application is still not running, you will receive an error like this:
+```plaintext
 { Error: connect ECONNREFUSED 127.0.0.1:3000
     at Object._errnoException (util.js:1031:13)
     at _exceptionWithHostPort (util.js:1052:20)
@@ -95,22 +72,21 @@ bot application is not running yet, you will receive an error like this.
   response: undefined }
 ```
 
+## Testing the Service
 
-### Testing the service
+The service is used with the bot application, but you can test it using your browser by passing a LOCATION as a URL parameter using the following URL:
+```plaintext
+http://localhost:PORT/service/<LOCATION>
+```
 
-The service is used with the bot application, but you can test it using the
-your browser passing a LOCATION as URL parameter using the following URL:
-
-`http://localhost:PORT/service/<LOCATION>`
-
-Like the following example:
-
+For example:
+```plaintext
 http://localhost:39269/service/curitiba
+```
 
-And you will receive a json response similar to this:
-
+You will receive a JSON response similar to this:
 ```json
 {
-"result": "few clouds at 18.5 degrees"
+  "result": "few clouds at 18.5 degrees"
 }
 ```
